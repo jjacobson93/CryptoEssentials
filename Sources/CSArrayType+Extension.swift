@@ -43,7 +43,7 @@ public extension CSArrayType where Iterator.Element == Byte {
     public init(base64: String) {
         self.init()
         
-        guard let decodedData = NSData(base64EncodedString: base64, options: []) else {
+        guard let decodedData = NSData(base64Encoded: base64, options: []) else {
             return
         }
         

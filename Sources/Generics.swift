@@ -23,7 +23,7 @@ extension UInt64:Initiable {}
 
 /// Initialize integer from array of bytes.
 /// This method may be slow
-public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsType>(bytes: [Byte]) -> T {
+public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsType>(_ bytes: [Byte]) -> T {
     var bytes = bytes.reversed() as Array<Byte> //FIXME: check it this is equivalent of Array(...)
     if bytes.count < sizeof(T) {
         let paddingCount = sizeof(T) - bytes.count
@@ -45,7 +45,7 @@ public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOper
 
 /// Array of bytes, little-endian representation. Don't use if not necessary.
 /// I found this method slow
-public func arrayOfBytes<T>(value:T, length:Int? = nil) -> [Byte] {
+public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [Byte] {
     let totalBytes = length ?? sizeof(T)
     
     let valuePointer = UnsafeMutablePointer<T>.init(allocatingCapacity: 1)
@@ -80,7 +80,7 @@ public func << <T:UnsignedInteger>(lhs: T, rhs: Int) -> UInt {
 
 // Generic function itself
 // FIXME: this generic function is not as generic as I would. It crashes for smaller types
-public func shiftLeft<T: SignedInteger where T: Initiable>(value: T, count: Int) -> T {
+public func shiftLeft<T: SignedInteger where T: Initiable>(_ value: T, count: Int) -> T {
     if (value == 0) {
         return 0;
     }
@@ -104,38 +104,38 @@ public func shiftLeft<T: SignedInteger where T: Initiable>(value: T, count: Int)
 }
 
 // for any f*** other Integer type - this part is so non-Generic
-public func shiftLeft(value: UInt, count: Int) -> UInt {
+public func shiftLeft(_ value: UInt, count: Int) -> UInt {
     return UInt(shiftLeft(Int(value), count: count)) //FIXME: count:
 }
 
-public func shiftLeft(value: Byte, count: Int) -> Byte {
+public func shiftLeft(_ value: Byte, count: Int) -> Byte {
     return Byte(shiftLeft(UInt(value), count: count))
 }
 
-public func shiftLeft(value: UInt16, count: Int) -> UInt16 {
+public func shiftLeft(_ value: UInt16, count: Int) -> UInt16 {
     return UInt16(shiftLeft(UInt(value), count: count))
 }
 
-public func shiftLeft(value: UInt32, count: Int) -> UInt32 {
+public func shiftLeft(_ value: UInt32, count: Int) -> UInt32 {
     return UInt32(shiftLeft(UInt(value), count: count))
 }
 
-public func shiftLeft(value: UInt64, count: Int) -> UInt64 {
+public func shiftLeft(_ value: UInt64, count: Int) -> UInt64 {
     return UInt64(shiftLeft(UInt(value), count: count))
 }
 
-public func shiftLeft(value: Int8, count: Int) -> Int8 {
+public func shiftLeft(_ value: Int8, count: Int) -> Int8 {
     return Int8(shiftLeft(Int(value), count: count))
 }
 
-public func shiftLeft(value: Int16, count: Int) -> Int16 {
+public func shiftLeft(_ value: Int16, count: Int) -> Int16 {
     return Int16(shiftLeft(Int(value), count: count))
 }
 
-public func shiftLeft(value: Int32, count: Int) -> Int32 {
+public func shiftLeft(_ value: Int32, count: Int) -> Int32 {
     return Int32(shiftLeft(Int(value), count: count))
 }
 
-public func shiftLeft(value: Int64, count: Int) -> Int64 {
+public func shiftLeft(_ value: Int64, count: Int) -> Int64 {
     return Int64(shiftLeft(Int(value), count: count))
 }

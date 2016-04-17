@@ -8,39 +8,39 @@
 
 import C7
 
-public func rotateLeft(v:Byte, _ n:Byte) -> Byte {
+public func rotateLeft(_ v:Byte, _ n:Byte) -> Byte {
     return ((v << n) & 0xFF) | (v >> (8 - n))
 }
 
-public func rotateLeft(v:UInt16, _ n:UInt16) -> UInt16 {
+public func rotateLeft(_ v:UInt16, _ n:UInt16) -> UInt16 {
     return ((v << n) & 0xFFFF) | (v >> (16 - n))
 }
 
-public func rotateLeft(v:UInt32, _ n:UInt32) -> UInt32 {
+public func rotateLeft(_ v:UInt32, _ n:UInt32) -> UInt32 {
     return ((v << n) & 0xFFFFFFFF) | (v >> (32 - n))
 }
 
-public func rotateLeft(x:UInt64, _ n:UInt64) -> UInt64 {
+public func rotateLeft(_ x:UInt64, _ n:UInt64) -> UInt64 {
     return (x << n) | (x >> (64 - n))
 }
 
-public func rotateRight(x:UInt16, n:UInt16) -> UInt16 {
+public func rotateRight(_ x:UInt16, n:UInt16) -> UInt16 {
     return (x >> n) | (x << (16 - n))
 }
 
-public func rotateRight(x:UInt32, n:UInt32) -> UInt32 {
+public func rotateRight(_ x:UInt32, n:UInt32) -> UInt32 {
     return (x >> n) | (x << (32 - n))
 }
 
-public func rotateRight(x:UInt64, n:UInt64) -> UInt64 {
+public func rotateRight(_ x:UInt64, n:UInt64) -> UInt64 {
     return ((x >> n) | (x << (64 - n)))
 }
 
-public func reverseBytes(value: UInt32) -> UInt32 {
+public func reverseBytes(_ value: UInt32) -> UInt32 {
     return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8)  | ((value & 0xFF000000) >> 24);
 }
 
-public func toUInt32Array(slice: ArraySlice<Byte>) -> Array<UInt32> {
+public func toUInt32Array(_ slice: ArraySlice<Byte>) -> Array<UInt32> {
     var result = Array<UInt32>()
     result.reserveCapacity(16)
     
@@ -55,7 +55,7 @@ public func toUInt32Array(slice: ArraySlice<Byte>) -> Array<UInt32> {
     return result
 }
 
-public func toUInt64Array(slice: ArraySlice<UInt8>) -> Array<UInt64> {
+public func toUInt64Array(_ slice: ArraySlice<UInt8>) -> Array<UInt64> {
     var result = Array<UInt64>()
     result.reserveCapacity(32)
     for idx in stride(from: slice.startIndex, to: slice.endIndex, by: sizeof(UInt64)) {
@@ -73,7 +73,7 @@ public func toUInt64Array(slice: ArraySlice<UInt8>) -> Array<UInt64> {
     return result
 }
 
-public func xor(a: [Byte], _ b:[Byte]) -> [Byte] {
+public func xor(_ a: [Byte], _ b:[Byte]) -> [Byte] {
     var xored = [Byte](repeating: 0, count: min(a.count, b.count))
     for i in 0..<xored.count {
         xored[i] = a[i] ^ b[i]

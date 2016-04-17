@@ -25,16 +25,16 @@ import C7
 /* array of bytes */
 extension Int {
     /** Array of bytes with optional padding (little-endian) */
-    public func bytes(totalBytes: Int = sizeof(Int)) -> [Byte] {
+    public func bytes(_ totalBytes: Int = sizeof(Int)) -> [Byte] {
         return arrayOfBytes(self, length: totalBytes)
     }
     
-    public static func withBytes(bytes: ArraySlice<Byte>) -> Int {
+    public static func withBytes(_ bytes: ArraySlice<Byte>) -> Int {
         return Int.withBytes(Array(bytes))
     }
     
     /** Int with array bytes (little-endian) */
-    public static func withBytes(bytes: [Byte]) -> Int {
+    public static func withBytes(_ bytes: [Byte]) -> Int {
         return integerWithBytes(bytes)
     }
 }
@@ -45,13 +45,13 @@ extension Int {
 extension Int {
     
     /** Shift bits to the left. All bits are shifted (including sign bit) */
-    private mutating func shiftLeft(count: Int) -> Int {
+    private mutating func shiftLeft(_ count: Int) -> Int {
         self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
         return self
     }
     
     /** Shift bits to the right. All bits are shifted (including sign bit) */
-    private mutating func shiftRight(count: Int) -> Int {
+    private mutating func shiftRight(_ count: Int) -> Int {
         if (self == 0) {
             return self;
         }

@@ -11,8 +11,8 @@ import C7
 
 extension NSMutableData {
     /** Convenient way to append bytes */
-    public func appendBytes(arrayOfBytes: [Byte]) {
-        self.appendBytes(arrayOfBytes, length: arrayOfBytes.count)
+    public func appendBytes(_ arrayOfBytes: [Byte]) {
+        self.append(arrayOfBytes, length: arrayOfBytes.count)
     }
 }
 
@@ -45,7 +45,7 @@ extension NSData {
         self.init(data: NSData.withBytes(bytes))
     }
     
-    class public func withBytes(bytes: [Byte]) -> NSData {
+    class public func withBytes(_ bytes: [Byte]) -> NSData {
         return NSData(bytes: bytes, length: bytes.count)
     }
 }
