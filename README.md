@@ -1,8 +1,8 @@
 # CryptoKitten
 
-[![Build Status](https://travis-ci.org/PlanTeam/BSON.svg?branch=master)](https://travis-ci.org/PlanTeam/BSON)
+[![Build Status](https://travis-ci.org/CryptoKitten/CryptoEssentials.svg?branch=master)](https://travis-ci.org/PlanTeam/BSON)
 [![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg)](https://swift.org)
-![License](https://img.shields.io/github/license/planteam/bson.svg)
+![License](https://img.shields.io/github/license/CryptoKitten/CryptoEssentials.svg)
 
 A crypto library for Swift, written in Swift.
  
