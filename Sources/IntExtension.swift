@@ -20,21 +20,21 @@
     import Darwin
 #endif
 
-import C7
+
 
 /* array of bytes */
 extension Int {
     /** Array of bytes with optional padding (little-endian) */
-    public func bytes(_ totalBytes: Int = sizeof(Int)) -> [Byte] {
+    public func bytes(_ totalBytes: Int = sizeof(Int)) -> [UInt8] {
         return arrayOfBytes(self, length: totalBytes)
     }
     
-    public static func withBytes(_ bytes: ArraySlice<Byte>) -> Int {
-        return Int.withBytes(Array(bytes))
+    public static func makeInt(with bytes: ArraySlice<UInt8>) -> Int {
+        return Int.makeInt(with: Array(bytes))
     }
     
     /** Int with array bytes (little-endian) */
-    public static func withBytes(_ bytes: [Byte]) -> Int {
+    public static func makeInt(with bytes: [UInt8]) -> Int {
         return integerWithBytes(bytes)
     }
 }

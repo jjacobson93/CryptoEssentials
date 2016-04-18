@@ -7,20 +7,20 @@
 //
 
 import Foundation
-import C7
+
 
 extension NSMutableData {
     /** Convenient way to append bytes */
-    public func appendBytes(_ arrayOfBytes: [Byte]) {
-        self.append(arrayOfBytes, length: arrayOfBytes.count)
+    public func append(bytes: [UInt8]) {
+        self.append(bytes, length: bytes.count)
     }
 }
 
 extension NSData {
     /// Two octet checksum as defined in RFC-4880. Sum of all octets, mod 65536
-    public func checksum() -> UInt16 {
+    public var checksum: UInt16 {
         var s:UInt32 = 0
-        var bytesArray = self.arrayOfBytes()
+        var bytesArray = self.bytes
         for i in 0..<bytesArray.count {
             s = s + UInt32(bytesArray[i])
         }
@@ -30,22 +30,22 @@ extension NSData {
 }
 
 extension NSData {
-    public func toHexString() -> String {
-        return self.arrayOfBytes().toHexString()
+    public var hexString: String {
+        return self.bytes.hexString
     }
     
-    public func arrayOfBytes() -> [Byte] {
-        let count = self.length / sizeof(Byte)
-        var bytesArray = [Byte](repeating: 0, count: count)
-        self.getBytes(&bytesArray, length:count * sizeof(Byte))
+    public var bytes: [UInt8] {
+        let count = self.length / sizeof(UInt8)
+        var bytesArray = [UInt8](repeating: 0, count: count)
+        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
         return bytesArray
     }
     
-    public convenience init(bytes: [Byte]) {
+    public convenience init(bytes: [UInt8]) {
         self.init(data: NSData.withBytes(bytes))
     }
     
-    class public func withBytes(_ bytes: [Byte]) -> NSData {
+    class public func withBytes(_ bytes: [UInt8]) -> NSData {
         return NSData(bytes: bytes, length: bytes.count)
     }
 }

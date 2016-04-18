@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Marcin Krzyzanowski. All rights reserved.
 //
 
-@_exported import C7
-
 public protocol HashProtocol {
     static var size: Int { get }
     
-    static func calculate(_ message: Array<UInt8>) -> [Byte]
+    static func calculate(_ message: Array<UInt8>) -> [UInt8]
 }

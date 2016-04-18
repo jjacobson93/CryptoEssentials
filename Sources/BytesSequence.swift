@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import C7
+
 
 //TODO: func anyGenerator is renamed to AnyGenerator in Swift 2.2, until then it's just dirty hack for linux (because swift >= 2.2 is available for Linux)
 public func CS_AnyGenerator<Element>(_ body: () -> Element?) -> AnyIterator<Element> {
@@ -16,15 +16,14 @@ public func CS_AnyGenerator<Element>(_ body: () -> Element?) -> AnyIterator<Elem
 
 public struct BytesSequence: Sequence {
     let chunkSize: Int
-    let data: [Byte]
+    let data: [UInt8]
     
-    public init(chunkSize: Int, data: [Byte]) {
+    public init(chunkSize: Int, data: [UInt8]) {
         self.chunkSize = chunkSize
         self.data = data
     }
     
-    public func makeIterator() -> AnyIterator<ArraySlice<Byte>> {
-        
+    public func makeIterator() -> AnyIterator<ArraySlice<UInt8>> {
         var offset:Int = 0
         
         return CS_AnyGenerator {

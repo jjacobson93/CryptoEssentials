@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Marcin Krzyzanowski. All rights reserved.
 //
 
-import C7
 
-public func rotateLeft(_ v:Byte, _ n:Byte) -> Byte {
+
+public func rotateLeft(_ v:UInt8, _ n:UInt8) -> UInt8 {
     return ((v << n) & 0xFF) | (v >> (8 - n))
 }
 
@@ -40,7 +40,7 @@ public func reverseBytes(_ value: UInt32) -> UInt32 {
     return ((value & 0x000000FF) << 24) | ((value & 0x0000FF00) << 8) | ((value & 0x00FF0000) >> 8)  | ((value & 0xFF000000) >> 24);
 }
 
-public func toUInt32Array(_ slice: ArraySlice<Byte>) -> Array<UInt32> {
+public func toUInt32Array(_ slice: ArraySlice<UInt8>) -> Array<UInt32> {
     var result = Array<UInt32>()
     result.reserveCapacity(16)
     
@@ -73,8 +73,8 @@ public func toUInt64Array(_ slice: ArraySlice<UInt8>) -> Array<UInt64> {
     return result
 }
 
-public func xor(_ a: [Byte], _ b:[Byte]) -> [Byte] {
-    var xored = [Byte](repeating: 0, count: min(a.count, b.count))
+public func xor(_ a: [UInt8], _ b:[UInt8]) -> [UInt8] {
+    var xored = [UInt8](repeating: 0, count: min(a.count, b.count))
     for i in 0..<xored.count {
         xored[i] = a[i] ^ b[i]
     }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Marcin Krzyzanowski. All rights reserved.
 //
 
-import C7
+
 
 /** Protocol and extensions for integerFromBitsArray. Bit hakish for me, but I can't do it in any other way */
 public protocol Initiable  {
@@ -16,19 +16,19 @@ public protocol Initiable  {
 
 extension Int:Initiable {}
 extension UInt:Initiable {}
-extension Byte:Initiable {}
+extension UInt8:Initiable {}
 extension UInt16:Initiable {}
 extension UInt32:Initiable {}
 extension UInt64:Initiable {}
 
 /// Initialize integer from array of bytes.
 /// This method may be slow
-public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsType>(_ bytes: [Byte]) -> T {
-    var bytes = bytes.reversed() as Array<Byte> //FIXME: check it this is equivalent of Array(...)
+public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsType>(_ bytes: [UInt8]) -> T {
+    var bytes = bytes.reversed() as Array<UInt8> //FIXME: check it this is equivalent of Array(...)
     if bytes.count < sizeof(T) {
         let paddingCount = sizeof(T) - bytes.count
         if (paddingCount > 0) {
-            bytes += [Byte](repeating: 0, count: paddingCount)
+            bytes += [UInt8](repeating: 0, count: paddingCount)
         }
     }
     
@@ -45,14 +45,14 @@ public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOper
 
 /// Array of bytes, little-endian representation. Don't use if not necessary.
 /// I found this method slow
-public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [Byte] {
+public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
     let totalBytes = length ?? sizeof(T)
     
     let valuePointer = UnsafeMutablePointer<T>.init(allocatingCapacity: 1)
     valuePointer.pointee = value
     
-    let bytesPointer = UnsafeMutablePointer<Byte>(valuePointer)
-    var bytes = [Byte](repeating: 0, count: totalBytes)
+    let bytesPointer = UnsafeMutablePointer<UInt8>(valuePointer)
+    var bytes = [UInt8](repeating: 0, count: totalBytes)
     for j in 0..<min(sizeof(T),totalBytes) {
         bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
     }
@@ -108,8 +108,8 @@ public func shiftLeft(_ value: UInt, count: Int) -> UInt {
     return UInt(shiftLeft(Int(value), count: count)) //FIXME: count:
 }
 
-public func shiftLeft(_ value: Byte, count: Int) -> Byte {
-    return Byte(shiftLeft(UInt(value), count: count))
+public func shiftLeft(_ value: UInt8, count: Int) -> UInt8 {
+    return UInt8(shiftLeft(UInt(value), count: count))
 }
 
 public func shiftLeft(_ value: UInt16, count: Int) -> UInt16 {

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Marcin Krzyzanowski. All rights reserved.
 //
 
-import C7
+
 
 public protocol BitshiftOperationsType {
     func <<(lhs: Self, rhs: Self) -> Self
@@ -16,7 +16,7 @@ public protocol BitshiftOperationsType {
 }
 
 public protocol ByteConvertible {
-    init(_ value: Byte)
+    init(_ value: UInt8)
     init(truncatingBitPattern: UInt64)
 }
 
@@ -26,7 +26,7 @@ extension Int16  : BitshiftOperationsType, ByteConvertible { }
 extension Int32  : BitshiftOperationsType, ByteConvertible { }
 
 extension UInt   : BitshiftOperationsType, ByteConvertible { }
-extension Byte  : BitshiftOperationsType, ByteConvertible { }
+extension UInt8  : BitshiftOperationsType, ByteConvertible { }
 extension UInt16 : BitshiftOperationsType, ByteConvertible { }
 extension UInt32 : BitshiftOperationsType, ByteConvertible { }
 extension UInt64 : BitshiftOperationsType, ByteConvertible {
