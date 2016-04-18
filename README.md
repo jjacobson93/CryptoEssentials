@@ -4,7 +4,7 @@
 [![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg)](https://swift.org)
 ![License](https://img.shields.io/github/license/CryptoKitten/CryptoEssentials.svg)
 
-A crypto library for Swift, written in Swift. 
+A set of crypto libraries for Swift, written in Swift. 
  
 ## CryptoEssentials
  
