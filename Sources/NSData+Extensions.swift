@@ -16,7 +16,7 @@ import Foundation
 extension NSMutableData {
     /** Convenient way to append bytes */
     public func append(bytes: [UInt8]) {
-        self.append(bytes, length: bytes.count)
+        self.append(bytes: bytes)
     }
 }
 
