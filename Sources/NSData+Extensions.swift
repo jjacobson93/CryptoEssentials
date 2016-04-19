@@ -46,7 +46,7 @@ extension NSData {
     }
     
     public convenience init(bytes: [UInt8]) {
-        self.init(data: NSData.withBytes(bytes), length: bytes.count)
+        self.init(bytes: bytes, length: bytes.count)
     }
     
     class public func withBytes(_ bytes: [UInt8]) -> NSData {
