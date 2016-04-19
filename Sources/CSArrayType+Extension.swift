@@ -47,10 +47,16 @@ public extension CSArrayType where Iterator.Element == UInt8 {
     public init(base64: String) {
         self.init()
         
-        guard let decodedData = NSData(base64Encoded: base64, options: []) else {
-            return
-        }
+        #if os(Linux)
+            guard let decodedData = NSData(base64EncodedString: base64, options: []) else {
+                return
+            }
+        #else
+            guard let decodedData = NSData(base64Encoded: base64, options: []) else {
+                return
+            }
+        #endif
         
-        self.append(contentsOf: decodedData.bytes)
+        self.append(contentsOf: decodedData.byteArray)
     }
 }
