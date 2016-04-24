@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/CryptoKitten/CryptoEssentials.svg?branch=master)](https://travis-ci.org/CryptoKitten/CryptoEssentials)
 [![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg)](https://swift.org)
 ![License](https://img.shields.io/github/license/CryptoKitten/CryptoEssentials.svg)
+[![Slack Status](http://orlandos.nl:3000/badge.svg)](http://orlandos.nl:3000/)
 
 A set of crypto libraries for Swift, written in Swift.
  
