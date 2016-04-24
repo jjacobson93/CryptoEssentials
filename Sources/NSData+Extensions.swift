@@ -38,6 +38,10 @@ extension NSData {
         return self.byteArray.hexString
     }
     
+    public var base64: String {
+        return Base64.encode(byteArray)
+    }
+    
     public var byteArray: [UInt8] {
         let count = self.length / sizeof(UInt8)
         var bytesArray = [UInt8](repeating: 0, count: count)
@@ -49,7 +53,11 @@ extension NSData {
         self.init(bytes: bytes, length: bytes.count)
     }
     
-    class public func withBytes(_ bytes: [UInt8]) -> NSData {
+    public static func withBytes(_ bytes: [UInt8]) -> NSData {
         return NSData(bytes: bytes)
+    }
+    
+    public static func makeNSData(fromBase64 string: String) -> NSData {
+        return NSData.withBytes(Base64.decode(string))
     }
 }
