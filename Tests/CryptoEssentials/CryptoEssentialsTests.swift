@@ -14,7 +14,6 @@ class CryptoEssentialsTests: XCTestCase {
     static var allTests: [(String, CryptoEssentialsTests -> () throws -> Void)] {
         return [
                    ("testBase64", testBase64),
-                   ("testNSData", testNSData),
                    ("testHexString", testHexString),
         ]
     }
@@ -31,11 +30,7 @@ class CryptoEssentialsTests: XCTestCase {
         let data = [UInt8]("Swift programming is awesome".utf8)
         
         XCTAssertEqual(data.base64, "U3dpZnQgcHJvZ3JhbW1pbmcgaXMgYXdlc29tZQ==")
-    }
-    
-    func testNSData() {
-        let data = NSData.makeNSData(fromBase64: "U3dpZnQgcHJvZ3JhbW1pbmcgaXMgYXdlc29tZQ==")
-        XCTAssertEqual(data.byteArray, [UInt8]("Swift programming is awesome".utf8))
+        XCTAssertEqual(data.base64, "U3dpZnQgcHJvZ3JhbW1pbmcgaXMgYXdlc29tZQ==")
     }
     
     // Using http://www.mathsisfun.com/binary-decimal-hexadecimal-converter.html
