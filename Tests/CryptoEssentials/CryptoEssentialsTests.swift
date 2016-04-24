@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 import CryptoEssentials
 
-class CollectionTests: XCTestCase {
+class CryptoEssentialsTests: XCTestCase {
     static var allTests: [(String, CollectionTests -> () throws -> Void)] {
         return [
                    ("testBase64", testBase64),
