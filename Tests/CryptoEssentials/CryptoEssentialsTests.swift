@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Foundation
 import CryptoEssentials
 
 class CollectionTests: XCTestCase {
