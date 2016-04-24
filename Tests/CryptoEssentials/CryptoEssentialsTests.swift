@@ -14,7 +14,7 @@ class CryptoEssentialsTests: XCTestCase {
     static var allTests: [(String, CryptoEssentialsTests -> () throws -> Void)] {
         return [
                    ("testBase64", testBase64),
-                   ("testNSData", testNSData),
+                   ("testInvalidBase64", testInvalidBase64),
                    ("testHexString", testHexString),
         ]
     }
@@ -28,14 +28,26 @@ class CryptoEssentialsTests: XCTestCase {
     }
     
     func testBase64() {
-        let data = [UInt8]("Swift programming is awesome".utf8)
-        
-        XCTAssertEqual(data.base64, "U3dpZnQgcHJvZ3JhbW1pbmcgaXMgYXdlc29tZQ==")
+        let iterations = 100
+        for _ in 1...iterations {
+            let numberOfBytes = Int(drand48()*100)
+            var data = [UInt8](repeating: 0, count: numberOfBytes)
+            
+            // Generate random data
+            data = data.map({ _ in UInt8( drand48()*255) })
+            
+            // Make sure it encodes / decodes properly
+            let roundTripData = (try? Base64.decode(Base64.encode(data))) ?? [UInt8]()
+            let urlSafeRoundTripData = (try? Base64.decode(Base64.urlSafeEncode(data))) ?? [UInt8]()
+            
+            XCTAssertEqual(data, roundTripData, "Random data should encode and decode properly")
+            XCTAssertEqual(data, urlSafeRoundTripData, "Random data should encode and decode properly")
+        }
     }
     
-    func testNSData() {
-        let data = NSData.makeNSData(fromBase64: "U3dpZnQgcHJvZ3JhbW1pbmcgaXMgYXdlc29tZQ==")
-        XCTAssertEqual(data.byteArray, [UInt8]("Swift programming is awesome".utf8))
+    func testInvalidBase64() {
+        let invalidBase64String = "!@#$%^&*("
+        XCTAssertNil(try? Base64.decode(invalidBase64String), "We should not try to decode an invalid string")
     }
     
     // Using http://www.mathsisfun.com/binary-decimal-hexadecimal-converter.html

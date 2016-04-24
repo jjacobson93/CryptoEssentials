@@ -23,7 +23,16 @@
 // SOFTWARE.
 
 public struct Base64 {
-    public static func decode(_ string: String) -> [UInt8] {
+    /** 
+     Decodes the base64 encoded string into an array of UInt8 representing 
+     bytes. Throws an Base64DecodingError.invalidCharacter if the input string 
+     is not encoded in valid Base64. 
+     
+     - parameters:
+       - string: the string to decode
+     - returns: an array of bytes.
+     */
+    public static func decode(_ string: String) throws -> [UInt8] {
         let ascii: [UInt8] = [
                                 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
                                 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
@@ -48,8 +57,17 @@ public struct Base64 {
         var unreadBytes = 0
         
         for character in string.utf8 {
+            // If we don't get a valid Base64 Character (excluding =):
             if ascii[Int(character)] > 63 {
-                break
+                
+                // If it's '=', which is padding, we are done with the string!
+                if character == 61 {
+                    break
+                }
+                // Otherwise this is not a valid Base64 encoded string
+                else {
+                    throw Base64DecodingError.invalidCharacter
+                }
             }
             
             unreadBytes += 1
@@ -59,7 +77,6 @@ public struct Base64 {
             return Int(Array(string.utf8)[index])
         }
         
-        // let encodedBytes = string.utf8.map { Int($0) }
         var index = 0
         
         while unreadBytes > 4 {
@@ -130,11 +147,11 @@ public struct Base64 {
         return encoded
     }
     
-    public func urlSafeEncode(_ data: [UInt8]) -> String {
+    public static func urlSafeEncode(_ data: [UInt8]) -> String {
         return Base64.encode(data, specialChars: "-_", paddingChar: nil)
     }
 }
 
-extension String {
-    
+enum Base64DecodingError: ErrorProtocol {
+    case invalidCharacter
 }
