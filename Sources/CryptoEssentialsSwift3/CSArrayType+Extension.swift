@@ -36,26 +36,16 @@
             guard let bytesArray = self as? [UInt8] else {
                 return nil
             }
-            
-            #if os(Linux)
-                return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
-            #else
-                return NSData(bytes: bytesArray).base64EncodedString([])
-            #endif
+    
+            return NSData(bytes: bytesArray).base64EncodedString([])
         }
-        
+    
         public init(base64: String) {
             self.init()
-            
-            #if os(Linux)
-                guard let decodedData = NSData(base64EncodedString: base64, options: []) else {
-                    return
-                }
-            #else
-                guard let decodedData = NSData(base64Encoded: base64, options: []) else {
-                    return
-                }
-            #endif
+    
+            guard let decodedData = NSData(base64Encoded: base64, options: []) else {
+                return
+            }
             
             self.append(contentsOf: decodedData.byteArray)
         }
