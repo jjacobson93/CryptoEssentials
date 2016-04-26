@@ -77,7 +77,7 @@ extension Int {
         return self
     }
 }
-swiftenv global DEVELOPMENT-SNAPSHOT-2016-04-25-a
+
 // Left operator
 
 /** shift left and assign with bits truncation */
