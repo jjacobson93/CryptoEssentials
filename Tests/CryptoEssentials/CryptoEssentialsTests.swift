@@ -31,7 +31,11 @@ class CryptoEssentialsTests: XCTestCase {
         let iterations = 100
         for _ in 1...iterations {
             let numberOfBytes = Int(drand48()*100)
-            var data = [UInt8](repeating: 0, count: numberOfBytes)
+            #if !swift(>=3.0)
+                var data = [UInt8](count: numberOfBytes, repeatedValue: 0)
+            #else
+                var data = [UInt8](repeating: 0, count: numberOfBytes)
+            #endif
             
             // Generate random data
             data = data.map({ _ in UInt8( drand48()*255) })
@@ -54,6 +58,10 @@ class CryptoEssentialsTests: XCTestCase {
     func testHexString() {
         let data = [UInt8]("kaas".utf8)
         
-        XCTAssertEqual(data.hexString.uppercased(), "6B616173")
+        #if !swift(>=3.0)
+            XCTAssertEqual(data.hexString.uppercaseString, "6B616173")
+        #else
+            XCTAssertEqual(data.hexString.uppercased(), "6B616173")
+        #endif
     }
 }
