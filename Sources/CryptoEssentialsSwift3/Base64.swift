@@ -21,15 +21,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
-public struct Base64 {
-    /** 
-     Decodes the base64 encoded string into an array of UInt8 representing 
-     bytes. Throws an Base64DecodingError.invalidCharacter if the input string 
-     is not encoded in valid Base64. 
-     
-     - parameters:
-       - string: the string to decode
+#if swift(>=3.0)
+    public struct Base64 {
+        /**
+         Decodes the base64 encoded string into an array of UInt8 representing
+         bytes. Throws an Base64DecodingError.invalidCharacter if the input string
+         is not encoded in valid Base64.
+         
+         - parameters:
+         - string: the string to decode
      - returns: an array of bytes.
      */
     public static func decode(_ string: String) throws -> [UInt8] {
@@ -155,3 +155,4 @@ public struct Base64 {
 enum Base64DecodingError: ErrorProtocol {
     case invalidCharacter
 }
+#endif

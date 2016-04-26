@@ -9,34 +9,10 @@
 // - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
-/*
- Bit shifting with overflow protection using overflow operator "&".
- Approach is consistent with standard overflow operators &+, &-, &*, &/
- and introduce new overflow operators for shifting: &<<, &>>
- Note: Works with unsigned integers values only
- Usage
- var i = 1       // init
- var j = i &<< 2 //shift left
- j &<<= 2        //shift left and assign
- @see: https://medium.com/@krzyzanowskim/swiftly-shift-bits-and-protect-yourself-be33016ce071
- */
-
-infix operator &<<= {
-    associativity none
-    precedence 160
-}
-
-infix operator &<< {
-    associativity none
-    precedence 160
-}
-
-infix operator &>>= {
-    associativity none
-    precedence 160
-}
-
-infix operator &>> {
-    associativity none
-    precedence 160
-}
+#if !swift(>=3.0)
+public protocol HashProtocol {
+    static var size: Int { get }
+    
+    static func calculate(message: Array<UInt8>) -> [UInt8]
+    }
+#endif

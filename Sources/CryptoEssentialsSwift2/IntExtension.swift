@@ -13,7 +13,7 @@
 //  - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 //  - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 //  - This notice may not be removed or altered from any source or binary distribution.
-
+#if !swift(>=3.0)
 #if os(Linux)
     import Glibc
 #else
@@ -25,7 +25,7 @@
 /* array of bytes */
 extension Int {
     /** Array of bytes with optional padding (little-endian) */
-    public func bytes(_ totalBytes: Int = sizeof(Int)) -> [UInt8] {
+    public func bytes(totalBytes: Int = sizeof(Int)) -> [UInt8] {
         return arrayOfBytes(self, length: totalBytes)
     }
     
@@ -45,13 +45,13 @@ extension Int {
 extension Int {
     
     /** Shift bits to the left. All bits are shifted (including sign bit) */
-    private mutating func shiftLeft(_ count: Int) -> Int {
-        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+    private mutating func shiftLeft(count: Int) -> Int {
+        self = CryptoEssentialsSwift2.shiftLeft(self, count: count) //FIXME: count:
         return self
     }
     
     /** Shift bits to the right. All bits are shifted (including sign bit) */
-    private mutating func shiftRight(_ count: Int) -> Int {
+    private mutating func shiftRight(count: Int) -> Int {
         if (self == 0) {
             return self;
         }
@@ -77,11 +77,11 @@ extension Int {
         return self
     }
 }
-
+swiftenv global DEVELOPMENT-SNAPSHOT-2016-04-25-a
 // Left operator
 
 /** shift left and assign with bits truncation */
-public func &<<= ( lhs: inout Int, rhs: Int) {
+public func &<<= ( inout lhs: Int, rhs: Int) {
     lhs.shiftLeft(rhs)
 }
 
@@ -95,7 +95,7 @@ public func &<< (lhs: Int, rhs: Int) -> Int {
 // Right operator
 
 /** shift right and assign with bits truncation */
-func &>>= ( lhs: inout Int, rhs: Int) {
+func &>>= ( inout lhs: Int, rhs: Int) {
     lhs.shiftRight(rhs)
 }
 
@@ -104,4 +104,5 @@ func &>> (lhs: Int, rhs: Int) -> Int {
     var l = lhs;
     l.shiftRight(rhs)
     return l
-}
+    }
+#endif

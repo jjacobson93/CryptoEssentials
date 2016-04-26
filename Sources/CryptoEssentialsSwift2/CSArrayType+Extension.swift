@@ -9,21 +9,21 @@
 // - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
-
+#if !swift(>=3.0)
 import Foundation
 
 
-public protocol CSArrayType: _ArrayProtocol {
+public protocol CSArrayType: _ArrayType {
     func cs_arrayValue() -> [Generator.Element]
 }
 
 extension Array: CSArrayType {
-    public func cs_arrayValue() -> [Iterator.Element] {
+    public func cs_arrayValue() -> [Generator.Element] {
         return self
     }
 }
 
-public extension CSArrayType where Iterator.Element == UInt8 {
+public extension CSArrayType where Generator.Element == UInt8 {
     public var hexString: String {
         #if os(Linux)
             return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
@@ -40,7 +40,7 @@ public extension CSArrayType where Iterator.Element == UInt8 {
         #if os(Linux)
             return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
         #else
-            return NSData(bytes: bytesArray).base64EncodedString([])
+            return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
         #endif
     }
     
@@ -52,11 +52,12 @@ public extension CSArrayType where Iterator.Element == UInt8 {
                 return
             }
         #else
-            guard let decodedData = NSData(base64Encoded: base64, options: []) else {
+            guard let decodedData = NSData.init(base64EncodedString: base64, options: []) else {
                 return
             }
         #endif
         
-        self.append(contentsOf: decodedData.byteArray)
+        self.appendContentsOf(decodedData.byteArray)
     }
-}
+    }
+#endif
