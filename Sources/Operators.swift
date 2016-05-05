@@ -20,24 +20,23 @@
  j &<<= 2        //shift left and assign
  @see: https://medium.com/@krzyzanowskim/swiftly-shift-bits-and-protect-yourself-be33016ce071
  */
-#if swift(>=3.0)
-    infix operator &<<= {
-        associativity none
-        precedence 160
-    }
-    
-    infix operator &<< {
-        associativity none
-        precedence 160
-    }
-    
-    infix operator &>>= {
-        associativity none
-        precedence 160
-    }
-    
-    infix operator &>> {
-        associativity none
-        precedence 160
-    }
-#endif
+
+infix operator &<<= {
+    associativity none
+    precedence 160
+}
+
+infix operator &<< {
+    associativity none
+    precedence 160
+}
+
+infix operator &>>= {
+    associativity none
+    precedence 160
+}
+
+infix operator &>> {
+    associativity none
+    precedence 160
+}

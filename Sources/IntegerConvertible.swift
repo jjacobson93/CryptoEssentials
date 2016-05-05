@@ -9,35 +9,32 @@
 // - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
-/*
- Bit shifting with overflow protection using overflow operator "&".
- Approach is consistent with standard overflow operators &+, &-, &*, &/
- and introduce new overflow operators for shifting: &<<, &>>
- Note: Works with unsigned integers values only
- Usage
- var i = 1       // init
- var j = i &<< 2 //shift left
- j &<<= 2        //shift left and assign
- @see: https://medium.com/@krzyzanowskim/swiftly-shift-bits-and-protect-yourself-be33016ce071
- */
-#if !swift(>=3.0)
-infix operator &<<= {
-    associativity none
-    precedence 160
+
+
+
+public protocol BitshiftOperationsType {
+    func <<(lhs: Self, rhs: Self) -> Self
+    func >>(lhs: Self, rhs: Self) -> Self
+    func <<=( lhs: inout Self, rhs: Self)
+    func >>=( lhs: inout Self, rhs: Self)
 }
 
-infix operator &<< {
-    associativity none
-    precedence 160
+public protocol ByteConvertible {
+    init(_ value: UInt8)
+    init(truncatingBitPattern: UInt64)
 }
 
-infix operator &>>= {
-    associativity none
-    precedence 160
-}
+extension Int    : BitshiftOperationsType, ByteConvertible { }
+extension Int8   : BitshiftOperationsType, ByteConvertible { }
+extension Int16  : BitshiftOperationsType, ByteConvertible { }
+extension Int32  : BitshiftOperationsType, ByteConvertible { }
 
-infix operator &>> {
-    associativity none
-    precedence 160
+extension UInt   : BitshiftOperationsType, ByteConvertible { }
+extension UInt8  : BitshiftOperationsType, ByteConvertible { }
+extension UInt16 : BitshiftOperationsType, ByteConvertible { }
+extension UInt32 : BitshiftOperationsType, ByteConvertible { }
+extension UInt64 : BitshiftOperationsType, ByteConvertible {
+    public init(truncatingBitPattern value: UInt64) {
+        self = value
     }
-#endif
+}

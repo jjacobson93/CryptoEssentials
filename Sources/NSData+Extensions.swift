@@ -9,14 +9,14 @@
 // - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
-#if !swift(>=3.0)
+
 import Foundation
 
 
 extension NSMutableData {
     /** Convenient way to append bytes */
     public func append(bytes: [UInt8]) {
-        self.append(bytes)
+        self.append(bytes: bytes)
     }
 }
 
@@ -40,7 +40,7 @@ extension NSData {
     
     public var byteArray: [UInt8] {
         let count = self.length / sizeof(UInt8)
-        var bytesArray = [UInt8](count: count, repeatedValue: 0)
+        var bytesArray = [UInt8](repeating: 0, count: count)
         self.getBytes(&bytesArray, length:count * sizeof(UInt8))
         return bytesArray
     }
@@ -49,9 +49,7 @@ extension NSData {
         self.init(bytes: bytes, length: bytes.count)
     }
     
-    class public func withBytes(bytes: [UInt8]) -> NSData {
+    public static func withBytes(_ bytes: [UInt8]) -> NSData {
         return NSData(bytes: bytes)
     }
 }
-    
-#endif

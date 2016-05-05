@@ -21,7 +21,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#if swift(>=3.0)
+
     public struct Base64 {
         /**
          Decodes the base64 encoded string into an array of UInt8 representing
@@ -155,4 +155,3 @@
 enum Base64DecodingError: ErrorProtocol {
     case invalidCharacter
 }
-#endif

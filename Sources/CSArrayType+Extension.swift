@@ -9,33 +9,44 @@
 // - The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation is required.
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
-#if swift(>=3.0)
-    import Foundation
-    
-    
-    //TODO: func anyGenerator is renamed to AnyGenerator in Swift 2.2, until then it's just dirty hack for linux (because swift >= 2.2 is available for Linux)
-    public func CS_AnyGenerator<Element>(_ body: () -> Element?) -> AnyIterator<Element> {
-        return AnyIterator(body)
+
+import Foundation
+
+
+public protocol CSArrayType: _ArrayProtocol {
+    func cs_arrayValue() -> [Generator.Element]
+}
+
+extension Array: CSArrayType {
+    public func cs_arrayValue() -> [Iterator.Element] {
+        return self
+    }
+}
+
+public extension CSArrayType where Iterator.Element == UInt8 {
+    public var hexString: String {
+        #if os(Linux)
+            return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
+        #else
+            return self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
+        #endif
     }
     
-    public struct BytesSequence: Sequence {
-        let chunkSize: Int
-        let data: [UInt8]
-        
-        public init(chunkSize: Int, data: [UInt8]) {
-            self.chunkSize = chunkSize
-            self.data = data
+    public var base64: String? {
+        guard let bytesArray = self as? [UInt8] else {
+            return nil
         }
         
-        public func makeIterator() -> AnyIterator<ArraySlice<UInt8>> {
-            var offset:Int = 0
-            
-            return CS_AnyGenerator {
-                let end = Swift.min(self.chunkSize, self.data.count - offset)
-                let result = self.data[offset..<offset + end]
-                offset += result.count
-                return result.count > 0 ? result : nil
-            }
-        }
+        return NSData(bytes: bytesArray).base64EncodedString([])
     }
-#endif
+    
+    public init(base64: String) {
+        self.init()
+        
+        guard let decodedData = NSData(base64Encoded: base64, options: []) else {
+            return
+        }
+        
+        self.append(contentsOf: decodedData.byteArray)
+    }
+}
