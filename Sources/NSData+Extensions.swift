@@ -56,10 +56,6 @@ extension NSData {
     }
 
     public convenience init?(base64: String) {
-        #if os(Linux)
-            self.init(base64EncodedString: base64, options: [])
-        #else
-            self.init(base64Encoded: base64, options: [])
-        #endif
+        self.init(base64Encoded: base64, options: [])
     }
 }
