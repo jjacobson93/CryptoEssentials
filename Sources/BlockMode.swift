@@ -10,43 +10,30 @@
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
 
-import Foundation
+public typealias CipherBlockOperation = (block: [UInt8]) -> [UInt8]?
 
-
-public protocol CSArrayType: _ArrayProtocol {
-    func cs_arrayValue() -> [Generator.Element]
+public protocol BlockMode {
+    static var options: BlockModeOptions { get }
+    static var blockType: InputBlockType { get }
+    
+    static func makeDecryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]>
+    
+    static func makeEncryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]>
 }
 
-extension Array: CSArrayType {
-    public func cs_arrayValue() -> [Iterator.Element] {
-        return self
-    }
+public enum InputBlockType {
+    case encrypt
+    case decrypt
 }
 
-public extension CSArrayType where Iterator.Element == UInt8 {
-    public var hexString: String {
-        #if os(Linux)
-            return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
-        #else
-            return self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
-        #endif
+public struct BlockModeOptions: OptionSet {
+    public let rawValue: Int
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
     }
     
-    public var base64: String? {
-        guard let bytesArray = self as? [UInt8] else {
-            return nil
-        }
-        
-        return NSData(bytes: bytesArray).base64EncodedString([])
-    }
-    
-    public init(base64: String) {
-        self.init()
-        
-        guard let decodedData = NSData(base64Encoded: base64, options: []) else {
-            return
-        }
-        
-        self.append(contentsOf: decodedData.byteArray)
-    }
+    public static let none = BlockModeOptions(rawValue: 0)
+    public static let initializationVectorRequired = BlockModeOptions(rawValue: 1)
+    public static let paddingRequired = BlockModeOptions(rawValue: 2)
 }

@@ -10,8 +10,32 @@
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
 
-public protocol HashProtocol {
-    static var size: Int { get }
+
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
+public final class SecureBytes {
+    private let bytes: [UInt8]
+    let count: Int
     
-    static func calculate(_ message: [UInt8]) -> [UInt8]
+    public init(bytes: [UInt8]) {
+        self.bytes = bytes
+        self.count = bytes.count
+        self.bytes.withUnsafeBufferPointer { (pointer) -> Void in
+            mlock(pointer.baseAddress, pointer.count)
+        }
+    }
+    
+    deinit {
+        self.bytes.withUnsafeBufferPointer { (pointer) -> Void in
+            munlock(pointer.baseAddress, pointer.count)
+        }
+    }
+    
+    public subscript(index: Int) -> UInt8 {
+        return self.bytes[index]
+    }
 }

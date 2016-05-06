@@ -31,9 +31,11 @@ extension NSData {
         s = s % 65536
         return UInt16(s)
     }
-}
-
-extension NSData {
+    
+    public var base64: String {
+        return self.base64EncodedString([.encoding64CharacterLineLength])
+    }
+    
     public var hexString: String {
         return self.byteArray.hexString
     }
@@ -51,5 +53,13 @@ extension NSData {
     
     public static func withBytes(_ bytes: [UInt8]) -> NSData {
         return NSData(bytes: bytes)
+    }
+
+    public convenience init?(base64: String) {
+        #if os(Linux)
+            self.init(base64EncodedString: base64, options: [])
+        #else
+            self.init(base64Encoded: base64, options: [])
+        #endif
     }
 }

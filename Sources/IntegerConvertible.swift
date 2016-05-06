@@ -12,7 +12,7 @@
 
 
 
-public protocol BitshiftOperationsType {
+public protocol BitshiftOperationsProtocol {
     func <<(lhs: Self, rhs: Self) -> Self
     func >>(lhs: Self, rhs: Self) -> Self
     func <<=( lhs: inout Self, rhs: Self)
@@ -24,16 +24,16 @@ public protocol ByteConvertible {
     init(truncatingBitPattern: UInt64)
 }
 
-extension Int    : BitshiftOperationsType, ByteConvertible { }
-extension Int8   : BitshiftOperationsType, ByteConvertible { }
-extension Int16  : BitshiftOperationsType, ByteConvertible { }
-extension Int32  : BitshiftOperationsType, ByteConvertible { }
+extension Int    : BitshiftOperationsProtocol, ByteConvertible { }
+extension Int8   : BitshiftOperationsProtocol, ByteConvertible { }
+extension Int16  : BitshiftOperationsProtocol, ByteConvertible { }
+extension Int32  : BitshiftOperationsProtocol, ByteConvertible { }
 
-extension UInt   : BitshiftOperationsType, ByteConvertible { }
-extension UInt8  : BitshiftOperationsType, ByteConvertible { }
-extension UInt16 : BitshiftOperationsType, ByteConvertible { }
-extension UInt32 : BitshiftOperationsType, ByteConvertible { }
-extension UInt64 : BitshiftOperationsType, ByteConvertible {
+extension UInt   : BitshiftOperationsProtocol, ByteConvertible { }
+extension UInt8  : BitshiftOperationsProtocol, ByteConvertible { }
+extension UInt16 : BitshiftOperationsProtocol, ByteConvertible { }
+extension UInt32 : BitshiftOperationsProtocol, ByteConvertible { }
+extension UInt64 : BitshiftOperationsProtocol, ByteConvertible {
     public init(truncatingBitPattern value: UInt64) {
         self = value
     }

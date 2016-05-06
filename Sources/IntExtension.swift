@@ -20,51 +20,50 @@
     import Darwin
 #endif
 
+public protocol CryptoIntegerProtocol: ByteConvertible, BitshiftOperationsProtocol {
+    static func makeInteger(with bytes: [UInt8]) -> Self
+    mutating func shiftLeft(_ count: Int) -> Self
+    mutating func shiftRight(_ count: Int) -> Self
+}
 
-
-/* array of bytes */
-extension Int {
-    /** Array of bytes with optional padding (little-endian) */
-    public func bytes(_ totalBytes: Int = sizeof(Int)) -> [UInt8] {
+extension CryptoIntegerProtocol {
+    public func bytes(_ totalBytes: Int = sizeof(Self)) -> [UInt8] {
         return arrayOfBytes(self, length: totalBytes)
     }
     
-    public static func makeInt(with bytes: ArraySlice<UInt8>) -> Int {
-        return Int.makeInt(with: Array(bytes))
-    }
-    
-    /** Int with array bytes (little-endian) */
-    public static func makeInt(with bytes: [UInt8]) -> Int {
-        return integerWithBytes(bytes)
+    public static func makeInteger(with bytes: ArraySlice<UInt8>) -> Self {
+        return Self.makeInteger(with: Array(bytes))
     }
 }
 
-
-
-/** Shift bits */
-extension Int {
+extension Int:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> Int {
+        return integerWithBytes(bytes)
+    }
     
     /** Shift bits to the left. All bits are shifted (including sign bit) */
-    private mutating func shiftLeft(_ count: Int) -> Int {
-        self &<< count //FIXME: count:
+    public mutating func shiftLeft(_ count: Int) -> Int {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
         return self
     }
     
     /** Shift bits to the right. All bits are shifted (including sign bit) */
-    private mutating func shiftRight(_ count: Int) -> Int {
+    public mutating func shiftRight(_ count: Int) -> Int {
         if (self == 0) {
-            return self;
+            return self
         }
         
-        let bitsCount = sizeofValue(self) * 8
+        let count = Int(count)
+        
+        let bitsCount = Int(sizeofValue(self) * 8)
         
         if (count >= bitsCount) {
             return 0
         }
         
         let maxBitsForValue = Int(floor(log2(Double(self)) + 1))
-        let shiftCount = Swift.min(count, maxBitsForValue - 1)
-        var shiftedValue:Int = 0;
+        let shiftCount = Swift.min(count, Int(maxBitsForValue - 1))
+        var shiftedValue: Int = 0;
         
         for bitIdx in 0..<bitsCount {
             // if bit is set then copy to result and shift left 1
@@ -73,7 +72,212 @@ extension Int {
                 shiftedValue = shiftedValue | (bit >> shiftCount)
             }
         }
-        self = Int(shiftedValue)
+        self = shiftedValue
+        return self
+    }
+}
+
+extension UInt:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> UInt {
+        return integerWithBytes(bytes)
+    }
+    
+    /** Shift bits to the left. All bits are shifted (including sign bit) */
+    public mutating func shiftLeft(_ count: Int) -> UInt {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+        return self
+    }
+    
+    /** Shift bits to the right. All bits are shifted (including sign bit) */
+    public mutating func shiftRight(_ count: Int) -> UInt {
+        if (self == 0) {
+            return self
+        }
+        
+        let count = UInt(count)
+        
+        let bitsCount = UInt(sizeofValue(self) * 8)
+        
+        if (count >= bitsCount) {
+            return 0
+        }
+        
+        let maxBitsForValue = UInt(floor(log2(Double(self)) + 1))
+        let shiftCount = Swift.min(count, UInt(maxBitsForValue - 1))
+        var shiftedValue: UInt = 0;
+        
+        for bitIdx in 0..<bitsCount {
+            // if bit is set then copy to result and shift left 1
+            let bit = 1 << bitIdx
+            if ((self & bit) == bit) {
+                shiftedValue = shiftedValue | (bit >> shiftCount)
+            }
+        }
+        self = shiftedValue
+        return self
+    }
+}
+
+extension UInt8:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> UInt8 {
+        return integerWithBytes(bytes)
+    }
+    
+    /** Shift bits to the left. All bits are shifted (including sign bit) */
+    public mutating func shiftLeft(_ count: Int) -> UInt8 {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+        return self
+    }
+    
+    /** Shift bits to the right. All bits are shifted (including sign bit) */
+    public mutating func shiftRight(_ count: Int) -> UInt8 {
+        if (self == 0) {
+            return self
+        }
+        
+        let count = UInt8(count)
+        
+        let bitsCount = UInt8(sizeofValue(self) * 8)
+        
+        if (count >= bitsCount) {
+            return 0
+        }
+        
+        let maxBitsForValue = UInt8(floor(log2(Double(self)) + 1))
+        let shiftCount = Swift.min(count, UInt8(maxBitsForValue - 1))
+        var shiftedValue: UInt8 = 0;
+        
+        for bitIdx in 0..<bitsCount {
+            // if bit is set then copy to result and shift left 1
+            let bit = 1 << bitIdx
+            if ((self & bit) == bit) {
+                shiftedValue = shiftedValue | (bit >> shiftCount)
+            }
+        }
+        self = shiftedValue
+        return self
+    }
+}
+
+extension UInt16:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> UInt16 {
+        return integerWithBytes(bytes)
+    }
+    
+    /** Shift bits to the left. All bits are shifted (including sign bit) */
+    public mutating func shiftLeft(_ count: Int) -> UInt16 {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+        return self
+    }
+    
+    /** Shift bits to the right. All bits are shifted (including sign bit) */
+    public mutating func shiftRight(_ count: Int) -> UInt16 {
+        if (self == 0) {
+            return self
+        }
+        
+        let count = UInt16(count)
+        
+        let bitsCount = UInt16(sizeofValue(self) * 8)
+        
+        if (count >= bitsCount) {
+            return 0
+        }
+        
+        let maxBitsForValue = UInt16(floor(log2(Double(self)) + 1))
+        let shiftCount = Swift.min(count, UInt16(maxBitsForValue - 1))
+        var shiftedValue: UInt16 = 0;
+        
+        for bitIdx in 0..<bitsCount {
+            // if bit is set then copy to result and shift left 1
+            let bit = 1 << bitIdx
+            if ((self & bit) == bit) {
+                shiftedValue = shiftedValue | (bit >> shiftCount)
+            }
+        }
+        self = shiftedValue
+        return self
+    }
+}
+
+extension UInt32:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> UInt32 {
+        return integerWithBytes(bytes)
+    }
+    
+    /** Shift bits to the left. All bits are shifted (including sign bit) */
+    public mutating func shiftLeft(_ count: Int) -> UInt32 {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+        return self
+    }
+    
+    /** Shift bits to the right. All bits are shifted (including sign bit) */
+    public mutating func shiftRight(_ count: Int) -> UInt32 {
+        if (self == 0) {
+            return self
+        }
+        
+        let count = UInt32(count)
+        
+        let bitsCount = UInt32(sizeofValue(self) * 8)
+        
+        if (count >= bitsCount) {
+            return 0
+        }
+        
+        let maxBitsForValue = UInt32(floor(log2(Double(self)) + 1))
+        let shiftCount = Swift.min(count, UInt32(maxBitsForValue - 1))
+        var shiftedValue: UInt32 = 0;
+        
+        for bitIdx in 0..<bitsCount {
+            // if bit is set then copy to result and shift left 1
+            let bit = 1 << bitIdx
+            if ((self & bit) == bit) {
+                shiftedValue = shiftedValue | (bit >> shiftCount)
+            }
+        }
+        self = shiftedValue
+        return self
+    }
+}
+
+extension UInt64:CryptoIntegerProtocol {
+    public static func makeInteger(with bytes: [UInt8]) -> UInt64 {
+        return integerWithBytes(bytes)
+    }
+    
+    /** Shift bits to the left. All bits are shifted (including sign bit) */
+    public mutating func shiftLeft(_ count: Int) -> UInt64 {
+        self = CryptoEssentials.shiftLeft(self, count: count) //FIXME: count:
+        return self
+    }
+    
+    /** Shift bits to the right. All bits are shifted (including sign bit) */
+    public mutating func shiftRight(_ count: Int) -> UInt64 {
+        if (self == 0) {
+            return self
+        }
+        
+        let count = UInt64(count)
+        
+        let bitsCount = UInt64(sizeofValue(self) * 8)
+        
+        if (count >= bitsCount) {
+            return 0
+        }
+        
+        let maxBitsForValue = UInt64(floor(log2(Double(self)) + 1))
+        let shiftCount = Swift.min(count, UInt64(maxBitsForValue - 1))
+        var shiftedValue: UInt64 = 0;
+        
+        for bitIdx in 0..<bitsCount {
+            // if bit is set then copy to result and shift left 1
+            let bit = 1 << bitIdx
+            if ((self & bit) == bit) {
+                shiftedValue = shiftedValue | (bit >> shiftCount)
+            }
+        }
+        self = shiftedValue
         return self
     }
 }
@@ -81,12 +285,12 @@ extension Int {
 // Left operator
 
 /** shift left and assign with bits truncation */
-public func &<<= ( lhs: inout Int, rhs: Int) {
+public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
     lhs.shiftLeft(rhs)
 }
 
 /** shift left with bits truncation */
-public func &<< (lhs: Int, rhs: Int) -> Int {
+public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
     var l = lhs;
     l.shiftLeft(rhs)
     return l
@@ -95,12 +299,12 @@ public func &<< (lhs: Int, rhs: Int) -> Int {
 // Right operator
 
 /** shift right and assign with bits truncation */
-func &>>= ( lhs: inout Int, rhs: Int) {
+func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
     lhs.shiftRight(rhs)
 }
 
 /** shift right and assign with bits truncation */
-func &>> (lhs: Int, rhs: Int) -> Int {
+func &>><T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
     var l = lhs;
     l.shiftRight(rhs)
     return l

@@ -27,8 +27,8 @@ extension UInt64:Initiable {}
 
 /// Initialize integer from array of bytes.
 /// This method may be slow
-public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsType>(_ bytes: [UInt8]) -> T {
-    var bytes = bytes.reversed() as Array<UInt8> //FIXME: check it this is equivalent of Array(...)
+public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsProtocol>(_ bytes: [UInt8]) -> T {
+    var bytes = bytes.reversed() as [UInt8] //FIXME: check it this is equivalent of Array(...)
     if bytes.count < sizeof(T) {
         let paddingCount = sizeof(T) - bytes.count
         if (paddingCount > 0) {
