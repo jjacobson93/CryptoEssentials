@@ -13,13 +13,6 @@
 import Foundation
 
 
-extension NSMutableData {
-    /** Convenient way to append bytes */
-    public func append(bytes: [UInt8]) {
-        self.append(bytes: bytes)
-    }
-}
-
 extension NSData {
     /// Two octet checksum as defined in RFC-4880. Sum of all octets, mod 65536
     public var checksum: UInt16 {
@@ -33,7 +26,11 @@ extension NSData {
     }
     
     public var base64: String {
-        return self.base64EncodedString([.encoding64CharacterLineLength])
+        #if !swift(>=3.0)
+            return self.base64EncodedStringWithOptions([.Encoding64CharacterLineLength])
+        #else
+            return self.base64EncodedString([.encoding64CharacterLineLength])
+        #endif
     }
     
     public var hexString: String {
@@ -56,6 +53,10 @@ extension NSData {
     }
 
     public convenience init?(base64: String) {
-        self.init(base64Encoded: base64, options: [])
+        #if !swift(>=3.0)
+            self.init(base64EncodedString: base64, options: [])
+        #else
+            self.init(base64Encoded: base64, options: [])
+        #endif
     }
 }

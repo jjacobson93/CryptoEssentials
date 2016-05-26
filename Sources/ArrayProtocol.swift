@@ -12,74 +12,151 @@
 
 import Foundation
 
-
-public protocol ArrayProtocol: _ArrayProtocol {
-    func arrayValue() -> [Generator.Element]
-}
-
-extension Array: ArrayProtocol {
-    public func arrayValue() -> [Iterator.Element] {
-        return self
-    }
-}
-
-public extension ArrayProtocol where Iterator.Element == UInt8 {
-    public var hexString: String {
-        #if os(Linux)
-            return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
-        #else
-            return self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
-        #endif
+#if !swift(>=3.0)
+    public protocol ArrayProtocol: _ArrayType {
+        func arrayValue() -> [Generator.Element]
     }
     
-    public var checksum: UInt16? {
-        guard let bytesArray = self as? [UInt8] else {
-            return nil
+    extension Array: ArrayProtocol {
+        public func arrayValue() -> [Generator.Element] {
+            return self
         }
-        
-        var s:UInt32 = 0
-        for i in 0..<bytesArray.count {
-            s = s + UInt32(bytesArray[i])
-        }
-        s = s % 65536
-        return UInt16(s)
     }
     
-    public var base64: String? {
-        guard let bytesArray = self as? [UInt8] else {
-            return nil
+    public extension ArrayProtocol where Generator.Element == UInt8 {
+        public var hexString: String {
+            #if os(Linux)
+                return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
+            #else
+                let s = self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
+                
+                return s
+            #endif
         }
         
-        return NSData(bytes: bytesArray).base64EncodedString([])
-    }
-    
-    public init(base64: String) {
-        self.init()
-        
-        guard let decodedData = NSData(base64Encoded: base64, options: []) else {
-            return
-        }
-        
-        self.append(contentsOf: decodedData.byteArray)
-    }
-
-    public init(hexString: String) {
-        var data = [UInt8]()
-        
-        var gen = hexString.characters.makeIterator()
-        while let c1 = gen.next(), c2 = gen.next() {
-            let s = String([c1, c2])
-            
-            guard let d = UInt8(s, radix: 16) else {
-                break
+        public var checksum: UInt16? {
+            guard let bytesArray = self as? [UInt8] else {
+                return nil
             }
             
-            data.append(d)
+            var s:UInt32 = 0
+            for i in 0..<bytesArray.count {
+                s = s + UInt32(bytesArray[i])
+            }
+            s = s % 65536
+            return UInt16(s)
+        }
+        
+        public var base64: String {
+            let bytesArray = self as? [UInt8] ?? []
+            
+            #if !swift(>=3.0)
+                return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
+            #else
+                return NSData(bytes: bytesArray).base64EncodedString([])
+            #endif
+        }
+        
+        public init(base64: String) {
+            self.init()
+            
+            guard let decodedData = NSData(base64: base64) else {
+                return
+            }
+            
+            self.append(contentsOf: decodedData.byteArray)
         }
 
-        self.init(data)
+        public init(hexString: String) {
+            var data = [UInt8]()
+            
+            var gen = hexString.characters.makeIterator()
+            while let c1 = gen.next(), c2 = gen.next() {
+                let s = String([c1, c2])
+                
+                guard let d = UInt8(s, radix: 16) else {
+                    break
+                }
+                
+                data.append(d)
+            }
+
+            self.init(data)
+        }
     }
-}
+#else
+    public protocol ArrayProtocol: _ArrayProtocol {
+        func arrayValue() -> [Generator.Element]
+    }
+    
+    extension Array: ArrayProtocol {
+        public func arrayValue() -> [Iterator.Element] {
+            return self
+        }
+    }
+
+    public extension ArrayProtocol where Iterator.Element == UInt8 {
+        public var hexString: String {
+            #if os(Linux)
+                return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
+            #else
+                let s = self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
+                
+                return s
+            #endif
+        }
+        
+        public var checksum: UInt16? {
+            guard let bytesArray = self as? [UInt8] else {
+                return nil
+            }
+            
+            var s:UInt32 = 0
+            for i in 0..<bytesArray.count {
+                s = s + UInt32(bytesArray[i])
+            }
+            s = s % 65536
+            return UInt16(s)
+        }
+        
+        public var base64: String {
+            let bytesArray = self as? [UInt8] ?? []
+            
+            #if !swift(>=3.0)
+                return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
+            #else
+                return NSData(bytes: bytesArray).base64EncodedString([])
+            #endif
+        }
+        
+        public init(base64: String) {
+            self.init()
+            
+            guard let decodedData = NSData(base64: base64) else {
+                return
+            }
+            
+            self.append(contentsOf: decodedData.byteArray)
+        }
+
+        public init(hexString: String) {
+            var data = [UInt8]()
+            
+            var gen = hexString.characters.makeIterator()
+            while let c1 = gen.next(), c2 = gen.next() {
+                let s = String([c1, c2])
+                
+                guard let d = UInt8(s, radix: 16) else {
+                    break
+                }
+                
+                data.append(d)
+            }
+
+            self.init(data)
+        }
+    }
+#endif
 
 extension Array {
     

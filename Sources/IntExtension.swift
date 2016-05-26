@@ -31,9 +31,10 @@ extension CryptoIntegerProtocol {
         return arrayOfBytes(self, length: totalBytes)
     }
     
-    public static func makeInteger(with bytes: ArraySlice<UInt8>) -> Self {
-        return Self.makeInteger(with: Array(bytes))
-    }
+//    public static func makeInteger(with bytes: ArraySlice<UInt8>) -> Self {
+//        let b = [UInt8](
+//        return Self.makeInteger(with: b)
+//    }
 }
 
 extension Int:CryptoIntegerProtocol {
@@ -285,9 +286,15 @@ extension UInt64:CryptoIntegerProtocol {
 // Left operator
 
 /** shift left and assign with bits truncation */
-public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-    lhs.shiftLeft(rhs)
-}
+#if !swift(>=3.0)
+    public func &<<=<T: CryptoIntegerProtocol> (inout lhs: T, rhs: Int) {
+        lhs.shiftLeft(rhs)
+    }
+#else
+    public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
+        lhs.shiftLeft(rhs)
+    }
+#endif
 
 /** shift left with bits truncation */
 public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
@@ -298,10 +305,17 @@ public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
 
 // Right operator
 
-/** shift right and assign with bits truncation */
-func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-    lhs.shiftRight(rhs)
-}
+#if !swift(>=3.0)
+    /** shift right and assign with bits truncation */
+    func &>>=<T: CryptoIntegerProtocol> (inout lhs: T, rhs: Int) {
+        lhs.shiftRight(rhs)
+    }
+#else
+    /** shift right and assign with bits truncation */
+    func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
+        lhs.shiftRight(rhs)
+    }
+#endif
 
 /** shift right and assign with bits truncation */
 func &>><T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {

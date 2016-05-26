@@ -15,8 +15,14 @@
 public protocol BitshiftOperationsProtocol {
     func <<(lhs: Self, rhs: Self) -> Self
     func >>(lhs: Self, rhs: Self) -> Self
+    
+    #if !swift(>=3.0)
+    func <<=(inout lhs: Self, rhs: Self)
+    func >>=(inout lhs: Self, rhs: Self)
+    #else
     func <<=( lhs: inout Self, rhs: Self)
     func >>=( lhs: inout Self, rhs: Self)
+    #endif
 }
 
 public protocol ByteConvertible {
