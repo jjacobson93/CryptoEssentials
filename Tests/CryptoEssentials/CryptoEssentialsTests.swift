@@ -11,7 +11,7 @@ import Foundation
 import CryptoEssentials
 
 class CryptoEssentialsTests: XCTestCase {
-    static var allTests: [(String, CryptoEssentialsTests -> () throws -> Void)] {
+    static var allTests: [(String, (CryptoEssentialsTests) -> () throws -> Void)] {
         return [
                    ("testBase64", testBase64),
                    ("testInvalidBase64", testInvalidBase64),

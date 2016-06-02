@@ -292,14 +292,14 @@ extension UInt64:CryptoIntegerProtocol {
     }
 #else
     public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-        lhs.shiftLeft(rhs)
+        let _ = lhs.shiftLeft(rhs)
     }
 #endif
 
 /** shift left with bits truncation */
 public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
     var l = lhs;
-    l.shiftLeft(rhs)
+    let _ = l.shiftLeft(rhs)
     return l
 }
 
@@ -313,13 +313,13 @@ public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
 #else
     /** shift right and assign with bits truncation */
     func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-        lhs.shiftRight(rhs)
+        let _ = lhs.shiftRight(rhs)
     }
 #endif
 
 /** shift right and assign with bits truncation */
 func &>><T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
     var l = lhs;
-    l.shiftRight(rhs)
+    let _ = l.shiftRight(rhs)
     return l
 }
