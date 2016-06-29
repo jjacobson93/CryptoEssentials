@@ -29,7 +29,11 @@ extension NSData {
         #if !swift(>=3.0)
             return self.base64EncodedStringWithOptions([.Encoding64CharacterLineLength])
         #else
-            return self.base64EncodedString(options: .lineLength64Characters)
+            #if os(Linux)
+                return self.base64EncodedString([.encoding64CharacterLineLength])
+            #else
+                return self.base64EncodedString(options: .lineLength64Characters)
+            #endif
         #endif
     }
     
