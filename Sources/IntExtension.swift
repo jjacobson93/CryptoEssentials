@@ -27,7 +27,7 @@ public protocol CryptoIntegerProtocol: ByteConvertible, BitshiftOperationsProtoc
 }
 
 extension CryptoIntegerProtocol {
-    public func bytes(_ totalBytes: Int = sizeof(Self)) -> [UInt8] {
+    public func bytes(_ totalBytes: Int = sizeof(Self.self)) -> [UInt8] {
         return arrayOfBytes(self, length: totalBytes)
     }
     

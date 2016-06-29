@@ -29,7 +29,7 @@ extension NSData {
         #if !swift(>=3.0)
             return self.base64EncodedStringWithOptions([.Encoding64CharacterLineLength])
         #else
-            return self.base64EncodedString([.encoding64CharacterLineLength])
+            return self.base64EncodedString(options: .lineLength64Characters)
         #endif
     }
     
@@ -38,9 +38,9 @@ extension NSData {
     }
     
     public var byteArray: [UInt8] {
-        let count = self.length / sizeof(UInt8)
+        let count = self.length / sizeof(UInt8.self)
         var bytesArray = [UInt8](repeating: 0, count: count)
-        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
+        self.getBytes(&bytesArray, length:count * sizeof(UInt8.self))
         return bytesArray
     }
     
