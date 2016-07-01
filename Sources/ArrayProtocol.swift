@@ -125,7 +125,11 @@ import Foundation
             #if !swift(>=3.0)
                 return NSData(bytes: bytesArray).base64EncodedStringWithOptions([])
             #else
-                return NSData(bytes: bytesArray).base64EncodedString([])
+                #if os(Linux)
+                    return NSData(bytes: bytesArray).base64EncodedString([])
+                #else
+                    return NSData(bytes: bytesArray).base64EncodedString(options: [])
+                #endif
             #endif
         }
         

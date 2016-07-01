@@ -29,14 +29,14 @@ extension UInt64:Initiable {}
 /// This method may be slow
 public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsProtocol>(_ bytes: [UInt8]) -> T {
     var bytes = bytes.reversed() as [UInt8] //FIXME: check it this is equivalent of Array(...)
-    if bytes.count < sizeof(T) {
-        let paddingCount = sizeof(T) - bytes.count
+    if bytes.count < sizeof(T.self) {
+        let paddingCount = sizeof(T.self) - bytes.count
         if (paddingCount > 0) {
             bytes += [UInt8](repeating: 0, count: paddingCount)
         }
     }
     
-    if sizeof(T) == 1 {
+    if sizeof(T.self) == 1 {
         return T(truncatingBitPattern: UInt64(bytes.first!))
     }
     
@@ -50,7 +50,7 @@ public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOper
 /// Array of bytes, little-endian representation. Don't use if not necessary.
 /// I found this method slow
 public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
-    let totalBytes = length ?? sizeof(T)
+    let totalBytes = length ?? sizeof(T.self)
     
     #if !swift(>=3.0)
         var valuePointer = UnsafeMutablePointer<T>.alloc(1)
@@ -62,7 +62,7 @@ public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
     
     let bytesPointer = UnsafeMutablePointer<UInt8>(valuePointer)
     var bytes = [UInt8](repeating: 0, count: totalBytes)
-    for j in 0..<min(sizeof(T),totalBytes) {
+    for j in 0..<min(sizeof(T.self),totalBytes) {
         bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
     }
     
