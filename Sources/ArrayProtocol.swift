@@ -147,7 +147,7 @@ import Foundation
             var data = [UInt8]()
 
             var gen = hexString.characters.makeIterator()
-            while let c1 = gen.next(), c2 = gen.next() {
+            while let c1 = gen.next(), let c2 = gen.next() {
                 let s = String([c1, c2])
 
                 guard let d = UInt8(s, radix: 16) else {
