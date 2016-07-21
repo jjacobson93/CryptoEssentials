@@ -26,7 +26,7 @@ public struct NoPadding: Padding {
 }
 
 public struct PKCS7: Padding {
-    public enum Error: ErrorProtocol {
+    public enum Error: Swift.Error {
         case InvalidPaddingValue
     }
     
