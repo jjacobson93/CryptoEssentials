@@ -4,7 +4,7 @@ import Foundation
     
     public typealias SignedInteger = SignedIntegerType
     public typealias UnsignedInteger = UnsignedIntegerType
-    public typealias ErrorProtocol = ErrorType
+    public typealias Error = ErrorType
     public typealias _ArrayProtocol = _ArrayType
     public typealias Sequence = SequenceType
     public typealias OptionSet = OptionSetType

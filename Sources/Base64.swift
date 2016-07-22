@@ -152,6 +152,6 @@ public struct Base64 {
     }
 }
 
-enum Base64DecodingError: ErrorProtocol {
+enum Base64DecodingError: Error {
     case invalidCharacter
 }
