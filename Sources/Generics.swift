@@ -55,7 +55,7 @@ public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
     #if !swift(>=3.0)
         var valuePointer = UnsafeMutablePointer<T>.alloc(1)
     #else
-        let valuePointer = UnsafeMutablePointer<T>.init(allocatingCapacity: 1)
+        let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
     #endif
     
     valuePointer.pointee = value
@@ -67,7 +67,7 @@ public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
     }
     
     valuePointer.deinitialize()
-    valuePointer.deallocateCapacity(1)
+    valuePointer.deallocate(capacity: 1)
     
     return bytes
 }
