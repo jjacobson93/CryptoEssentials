@@ -286,15 +286,9 @@ extension UInt64:CryptoIntegerProtocol {
 // Left operator
 
 /** shift left and assign with bits truncation */
-#if !swift(>=3.0)
-    public func &<<=<T: CryptoIntegerProtocol> (inout lhs: T, rhs: Int) {
-        lhs.shiftLeft(rhs)
-    }
-#else
-    public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-        let _ = lhs.shiftLeft(rhs)
-    }
-#endif
+public func &<<=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
+    let _ = lhs.shiftLeft(rhs)
+}
 
 /** shift left with bits truncation */
 public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
@@ -304,18 +298,10 @@ public func &<<<T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {
 }
 
 // Right operator
-
-#if !swift(>=3.0)
-    /** shift right and assign with bits truncation */
-    func &>>=<T: CryptoIntegerProtocol> (inout lhs: T, rhs: Int) {
-        lhs.shiftRight(rhs)
-    }
-#else
-    /** shift right and assign with bits truncation */
-    func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
-        let _ = lhs.shiftRight(rhs)
-    }
-#endif
+/** shift right and assign with bits truncation */
+func &>>=<T: CryptoIntegerProtocol> ( lhs: inout T, rhs: Int) {
+    let _ = lhs.shiftRight(rhs)
+}
 
 /** shift right and assign with bits truncation */
 func &>><T: CryptoIntegerProtocol> (lhs: T, rhs: Int) -> T {

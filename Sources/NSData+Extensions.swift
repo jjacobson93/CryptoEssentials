@@ -26,14 +26,10 @@ extension NSData {
     }
     
     public var base64: String {
-        #if !swift(>=3.0)
-            return self.base64EncodedStringWithOptions([.Encoding64CharacterLineLength])
+        #if os(Linux)
+            return self.base64EncodedString([.encoding64CharacterLineLength])
         #else
-            #if os(Linux)
-                return self.base64EncodedString([.encoding64CharacterLineLength])
-            #else
-                return self.base64EncodedString(options: .lineLength64Characters)
-            #endif
+            return self.base64EncodedString(options: .lineLength64Characters)
         #endif
     }
     
@@ -57,10 +53,6 @@ extension NSData {
     }
 
     public convenience init?(base64: String) {
-        #if !swift(>=3.0)
-            self.init(base64EncodedString: base64, options: [])
-        #else
-            self.init(base64Encoded: base64, options: [])
-        #endif
+        self.init(base64Encoded: base64, options: [])
     }
 }

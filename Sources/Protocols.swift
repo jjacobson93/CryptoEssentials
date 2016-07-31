@@ -15,3 +15,9 @@ public protocol HashProtocol {
     
     static func calculate(_ message: [UInt8]) -> [UInt8]
 }
+
+public protocol KeyDerivationFunction {
+    static func derive(fromKey key: [UInt8], withSalt salt: [UInt8], rounds: UInt) throws -> [UInt8]
+    
+    static func derive(fromKey key: String, withSalt salt: [UInt8], rounds: UInt) throws -> [UInt8]
+}

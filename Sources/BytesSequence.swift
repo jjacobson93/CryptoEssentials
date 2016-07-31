@@ -21,18 +21,6 @@ public struct BytesSequence: Sequence {
         self.data = data
     }
     
-    #if !swift(>=3.0)
-    public func generate() -> AnyGenerator<ArraySlice<UInt8>> {
-        var offset:Int = 0
-        
-        return AnyGenerator {
-            let end = Swift.min(self.chunkSize, self.data.count - offset)
-            let result = self.data[offset..<offset + end]
-            offset += result.count
-            return result.count > 0 ? result : nil
-        }
-    }
-    #else
     public func makeIterator() -> AnyIterator<ArraySlice<UInt8>> {
         var offset:Int = 0
         
@@ -43,5 +31,4 @@ public struct BytesSequence: Sequence {
             return result.count > 0 ? result : nil
         }
     }
-    #endif
 }

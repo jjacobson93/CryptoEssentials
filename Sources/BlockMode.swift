@@ -16,15 +16,9 @@ public protocol BlockMode {
     static var options: BlockModeOptions { get }
     static var blockType: InputBlockType { get }
     
-    #if !swift(>=3.0)
-    static func makeDecryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyGenerator<[UInt8]>) -> AnyGenerator<[UInt8]>
-    
-    static func makeEncryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyGenerator<[UInt8]>) -> AnyGenerator<[UInt8]>
-    #else
     static func makeDecryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]>
     
     static func makeEncryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]>
-    #endif
 }
 
 public enum InputBlockType {

@@ -52,11 +52,7 @@ public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOper
 public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
     let totalBytes = length ?? sizeof(T.self)
     
-    #if !swift(>=3.0)
-        var valuePointer = UnsafeMutablePointer<T>.alloc(1)
-    #else
-        let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
-    #endif
+    let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
     
     valuePointer.pointee = value
     
