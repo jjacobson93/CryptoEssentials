@@ -19,9 +19,9 @@ public func generateNumber(between first: Int32, and second: Int32) -> Int32 {
     
     let modular = UInt32((high - low) + 1)
     #if os(Linux)
-        let random : UInt32 = rand()
+        let random = UInt32(bitPattern: rand())
     #else
-        let random : UInt32 = arc4random()
+        let random = arc4random()
     #endif
     
     return Int32(random % modular) + low
