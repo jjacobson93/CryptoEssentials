@@ -27,16 +27,16 @@ extension UInt64:Initiable {}
 
 /// Initialize integer from array of bytes.
 /// This method may be slow
-public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOperationsProtocol>(_ bytes: [UInt8]) -> T {
+public func integerWithBytes<T: Integer>(_ bytes: [UInt8]) -> T where T:ByteConvertible, T: BitshiftOperationsProtocol {
     var bytes = bytes.reversed() as [UInt8] //FIXME: check it this is equivalent of Array(...)
-    if bytes.count < sizeof(T.self) {
-        let paddingCount = sizeof(T.self) - bytes.count
+    if bytes.count < MemoryLayout<T>.size {
+        let paddingCount = MemoryLayout<T>.size - bytes.count
         if (paddingCount > 0) {
             bytes += [UInt8](repeating: 0, count: paddingCount)
         }
     }
     
-    if sizeof(T.self) == 1 {
+    if MemoryLayout<T>.size == 1 {
         return T(truncatingBitPattern: UInt64(bytes.first!))
     }
     
@@ -50,15 +50,15 @@ public func integerWithBytes<T: Integer where T:ByteConvertible, T: BitshiftOper
 /// Array of bytes, little-endian representation. Don't use if not necessary.
 /// I found this method slow
 public func arrayOfBytes<T>(_ value:T, length:Int? = nil) -> [UInt8] {
-    let totalBytes = length ?? sizeof(T.self)
+    let totalBytes = length ?? MemoryLayout<T>.size
     
     let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
     
     valuePointer.pointee = value
     
-    let bytesPointer = UnsafeMutablePointer<UInt8>(valuePointer)
+    let bytesPointer = UnsafeMutableRawPointer(valuePointer).assumingMemoryBound(to: UInt8.self)
     var bytes = [UInt8](repeating: 0, count: totalBytes)
-    for j in 0..<min(sizeof(T.self),totalBytes) {
+    for j in 0..<min(MemoryLayout<T>.size,totalBytes) {
         bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
     }
     
@@ -85,12 +85,12 @@ public func << <T:UnsignedInteger>(lhs: T, rhs: Int) -> UInt {
 
 // Generic function itself
 // FIXME: this generic function is not as generic as I would. It crashes for smaller types
-public func shiftLeft<T: SignedInteger where T: Initiable>(_ value: T, count: Int) -> T {
+public func shiftLeft<T: SignedInteger>(_ value: T, count: Int) -> T where T: Initiable {
     if (value == 0) {
         return 0;
     }
     
-    let bitsCount = (sizeofValue(value) * 8)
+    let bitsCount = (MemoryLayout<T>.size * 8)
     let shiftCount = Int(Swift.min(count, bitsCount - 1))
     
     var shiftedValue:T = 0;

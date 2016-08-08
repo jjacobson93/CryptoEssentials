@@ -38,9 +38,9 @@ extension NSData {
     }
     
     public var byteArray: [UInt8] {
-        let count = self.length / sizeof(UInt8.self)
+        let count = self.length / MemoryLayout<UInt8>.size
         var bytesArray = [UInt8](repeating: 0, count: count)
-        self.getBytes(&bytesArray, length:count * sizeof(UInt8.self))
+        self.getBytes(&bytesArray, length:count * MemoryLayout<UInt8>.size)
         return bytesArray
     }
     

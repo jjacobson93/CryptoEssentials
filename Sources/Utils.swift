@@ -48,7 +48,7 @@ public func toUInt32Array(_ slice: ArraySlice<UInt8>) -> Array<UInt32> {
     var result = Array<UInt32>()
     result.reserveCapacity(16)
     
-    for idx in stride(from: slice.startIndex, to: slice.endIndex, by: sizeof(UInt32.self)) {
+    for idx in stride(from: slice.startIndex, to: slice.endIndex, by: MemoryLayout<UInt32>.size) {
         let val1:UInt32 = (UInt32(slice[idx.advanced(by: 3)]) << 24)
         let val2:UInt32 = (UInt32(slice[idx.advanced(by: 2)]) << 16)
         let val3:UInt32 = (UInt32(slice[idx.advanced(by: 1)]) << 8)
@@ -62,7 +62,7 @@ public func toUInt32Array(_ slice: ArraySlice<UInt8>) -> Array<UInt32> {
 public func toUInt64Array(_ slice: ArraySlice<UInt8>) -> Array<UInt64> {
     var result = Array<UInt64>()
     result.reserveCapacity(32)
-    for idx in stride(from: slice.startIndex, to: slice.endIndex, by: sizeof(UInt64.self)) {
+    for idx in stride(from: slice.startIndex, to: slice.endIndex, by: MemoryLayout<UInt64>.size) {
         var val:UInt64 = 0
         val |= UInt64(slice[idx.advanced(by: 7)]) << 56
         val |= UInt64(slice[idx.advanced(by: 6)]) << 48

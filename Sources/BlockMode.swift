@@ -10,7 +10,7 @@
 // - Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // - This notice may not be removed or altered from any source or binary distribution.
 
-public typealias CipherBlockOperation = (block: [UInt8]) -> [UInt8]?
+public typealias CipherBlockOperation = (_ block: [UInt8]) -> [UInt8]?
 
 public protocol BlockMode {
     static var options: BlockModeOptions { get }
