@@ -17,7 +17,7 @@ final public class ECB: BlockMode {
     public static func makeDecryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
         return AnyIterator {
             guard let plaintext = inputGenerator.next(),
-                let encrypted = cipherOperation(block: plaintext)
+                let encrypted = cipherOperation(plaintext)
                 else {
                     return nil
             }
@@ -29,7 +29,7 @@ final public class ECB: BlockMode {
     public static func makeEncryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
         return AnyIterator {
             guard let plaintext = inputGenerator.next(),
-                let encrypted = cipherOperation(block: plaintext)
+                let encrypted = cipherOperation(plaintext)
                 else {
                     return nil
             }

@@ -19,7 +19,7 @@ final public class PCBC: BlockMode {
         
         return AnyIterator {
             guard let plaintext = inputGenerator.next(),
-                let encrypted = cipherOperation(block: xor(prevCipherText ?? iv, plaintext))
+                let encrypted = cipherOperation(xor(prevCipherText ?? iv, plaintext))
                 else {
                     return nil
             }
@@ -34,7 +34,7 @@ final public class PCBC: BlockMode {
         
         return AnyIterator {
             guard let ciphertext = inputGenerator.next(),
-                let decrypted = cipherOperation(block: ciphertext)
+                let decrypted = cipherOperation(ciphertext)
                 else {
                     return nil
             }

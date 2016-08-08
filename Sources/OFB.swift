@@ -19,7 +19,7 @@ final public class OFB: BlockMode {
         
         return AnyIterator {
             guard let plaintext = inputGenerator.next(),
-                let ciphertext = cipherOperation(block: prevCipherText ?? iv)
+                let ciphertext = cipherOperation(prevCipherText ?? iv)
                 else {
                     return nil
             }
@@ -34,7 +34,7 @@ final public class OFB: BlockMode {
         
         return AnyIterator {
             guard let ciphertext = inputGenerator.next(),
-                let decrypted = cipherOperation(block: prevCipherText ?? iv)
+                let decrypted = cipherOperation(prevCipherText ?? iv)
                 else {
                     return nil
             }
