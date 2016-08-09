@@ -27,7 +27,7 @@ public protocol CryptoIntegerProtocol: ByteConvertible, BitshiftOperationsProtoc
 }
 
 extension CryptoIntegerProtocol {
-    public func bytes(_ totalBytes: Int = sizeof(Self.self)) -> [UInt8] {
+    public func bytes(_ totalBytes: Int = MemoryLayout<Self>.size) -> [UInt8] {
         return arrayOfBytes(self, length: totalBytes)
     }
     
@@ -56,7 +56,7 @@ extension Int:CryptoIntegerProtocol {
         
         let count = Int(count)
         
-        let bitsCount = Int(sizeofValue(self) * 8)
+        let bitsCount = Int(MemoryLayout<Int>.size * 8)
         
         if (count >= bitsCount) {
             return 0
@@ -97,7 +97,7 @@ extension UInt:CryptoIntegerProtocol {
         
         let count = UInt(count)
         
-        let bitsCount = UInt(sizeofValue(self) * 8)
+        let bitsCount = UInt(MemoryLayout<UInt>.size * 8)
         
         if (count >= bitsCount) {
             return 0
@@ -138,7 +138,7 @@ extension UInt8:CryptoIntegerProtocol {
         
         let count = UInt8(count)
         
-        let bitsCount = UInt8(sizeofValue(self) * 8)
+        let bitsCount = UInt8(MemoryLayout<UInt8>.size * 8)
         
         if (count >= bitsCount) {
             return 0
@@ -179,7 +179,7 @@ extension UInt16:CryptoIntegerProtocol {
         
         let count = UInt16(count)
         
-        let bitsCount = UInt16(sizeofValue(self) * 8)
+        let bitsCount = UInt16(MemoryLayout<UInt16>.size * 8)
         
         if (count >= bitsCount) {
             return 0
@@ -220,7 +220,7 @@ extension UInt32:CryptoIntegerProtocol {
         
         let count = UInt32(count)
         
-        let bitsCount = UInt32(sizeofValue(self) * 8)
+        let bitsCount = UInt32(MemoryLayout<UInt32>.size * 8)
         
         if (count >= bitsCount) {
             return 0
@@ -261,7 +261,7 @@ extension UInt64:CryptoIntegerProtocol {
         
         let count = UInt64(count)
         
-        let bitsCount = UInt64(sizeofValue(self) * 8)
+        let bitsCount = UInt64(MemoryLayout<UInt64>.size * 8)
         
         if (count >= bitsCount) {
             return 0

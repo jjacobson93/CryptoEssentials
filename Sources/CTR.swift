@@ -25,7 +25,7 @@ final public class CTR: BlockMode {
             
             let nonce = buildNonce(iv: iv, counter: counter)
             counter = counter + 1
-            if let encrypted = cipherOperation(block: nonce) {
+            if let encrypted = cipherOperation(nonce) {
                 return xor(plaintext, encrypted)
             }
             
@@ -44,7 +44,7 @@ final public class CTR: BlockMode {
             let nonce = buildNonce(iv: iv, counter: counter)
             counter = counter + 1
             
-            if let decrypted = cipherOperation(block: nonce) {
+            if let decrypted = cipherOperation(nonce) {
                 return xor(decrypted, ciphertext)
             }
             

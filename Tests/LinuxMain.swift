@@ -1,6 +1,6 @@
 import XCTest
-@testable import CryptoEssentialsTestSuite
+@testable import CryptoEssentialsTests
 
 XCTMain([
-            testCase(CryptoEssentialsTests.allTests)
-    ])
+    testCase(CryptoEssentialsTests.allTests)
+])

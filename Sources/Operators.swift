@@ -21,22 +21,10 @@
  @see: https://medium.com/@krzyzanowskim/swiftly-shift-bits-and-protect-yourself-be33016ce071
  */
 
-infix operator &<<= {
-    associativity none
-    precedence 160
-}
+infix operator &<<= : BitwiseShiftPrecedence
 
-infix operator &<< {
-    associativity none
-    precedence 160
-}
+infix operator &<< : BitwiseShiftPrecedence
 
-infix operator &>>= {
-    associativity none
-    precedence 160
-}
+infix operator &>>= : BitwiseShiftPrecedence
 
-infix operator &>> {
-    associativity none
-    precedence 160
-}
+infix operator &>> : BitwiseShiftPrecedence
