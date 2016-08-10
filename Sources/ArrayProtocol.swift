@@ -12,7 +12,7 @@
 
 import Foundation
 
-public protocol ArrayProtocol: RangeReplaceableCollection {
+public protocol ArrayProtocol: RangeReplaceableCollection, ExpressibleByArrayLiteral {
     func arrayValue() -> [Generator.Element]
 }
 
