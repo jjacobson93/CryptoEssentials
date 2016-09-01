@@ -14,7 +14,7 @@ final public class OFB: BlockMode {
     public static let options: BlockModeOptions = [.initializationVectorRequired]
     public static let blockType = InputBlockType.encrypt
     
-    public static func makeEncryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
+    public static func makeEncryptionIterator(iv: [UInt8], cipherOperation: @escaping CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
         var prevCipherText: [UInt8]? = nil
         
         return AnyIterator {
@@ -29,7 +29,7 @@ final public class OFB: BlockMode {
         }
     }
     
-    public static func makeDecryptionIterator(iv: [UInt8], cipherOperation: CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
+    public static func makeDecryptionIterator(iv: [UInt8], cipherOperation: @escaping CipherBlockOperation, inputGenerator: AnyIterator<[UInt8]>) -> AnyIterator<[UInt8]> {
         var prevCipherText: [UInt8]? = nil
         
         return AnyIterator {
