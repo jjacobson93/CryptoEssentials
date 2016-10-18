@@ -24,13 +24,7 @@ extension Array: ArrayProtocol {
 
 public extension ArrayProtocol where Iterator.Element == UInt8 {
     public var hexString: String {
-        #if os(Linux)
-            return self.lazy.reduce("") { $0 + (NSString(format:"%02x", $1).description) }
-        #else
-            let s = self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
-            
-            return s
-        #endif
+        return self.lazy.reduce("") { $0 + String(format:"%02x", $1) }
     }
     
     public var checksum: UInt16? {
@@ -49,17 +43,13 @@ public extension ArrayProtocol where Iterator.Element == UInt8 {
     public var base64: String {
         let bytesArray = self as? [UInt8] ?? []
         
-        #if os(Linux)
-            return NSData(bytes: bytesArray).base64EncodedString([])
-        #else
-            return NSData(bytes: bytesArray).base64EncodedString(options: [])
-        #endif
+        return Data(bytes: bytesArray).base64EncodedString(options: [])
     }
     
     public init(base64: String) {
         self.init()
         
-        guard let decodedData = NSData(base64: base64) else {
+        guard let decodedData = Data(base64: base64) else {
             return
         }
         

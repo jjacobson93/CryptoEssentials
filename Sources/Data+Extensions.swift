@@ -13,7 +13,7 @@
 import Foundation
 
 
-extension NSData {
+extension Data {
     /// Two octet checksum as defined in RFC-4880. Sum of all octets, mod 65536
     public var checksum: UInt16 {
         var s:UInt32 = 0
@@ -26,11 +26,7 @@ extension NSData {
     }
     
     public var base64: String {
-        #if os(Linux)
-            return self.base64EncodedString([.encoding64CharacterLineLength])
-        #else
-            return self.base64EncodedString(options: .lineLength64Characters)
-        #endif
+        return self.base64EncodedString(options: .lineLength64Characters)
     }
     
     public var hexString: String {
@@ -38,21 +34,17 @@ extension NSData {
     }
     
     public var byteArray: [UInt8] {
-        let count = self.length / MemoryLayout<UInt8>.size
+        let count = self.count / MemoryLayout<UInt8>.size
         var bytesArray = [UInt8](repeating: 0, count: count)
-        self.getBytes(&bytesArray, length:count * MemoryLayout<UInt8>.size)
+        self.copyBytes(to: &bytesArray, count: count * MemoryLayout<UInt8>.size)
         return bytesArray
     }
     
-    public convenience init(bytes: [UInt8]) {
-        self.init(bytes: bytes, length: bytes.count)
-    }
-    
-    public static func withBytes(_ bytes: [UInt8]) -> NSData {
-        return NSData(bytes: bytes)
+    public static func withBytes(_ bytes: [UInt8]) -> Data {
+        return Data(bytes: bytes)
     }
 
-    public convenience init?(base64: String) {
+    public init?(base64: String) {
         self.init(base64Encoded: base64, options: [])
     }
 }
